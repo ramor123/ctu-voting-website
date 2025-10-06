@@ -1,1 +1,1 @@
-web: gunicorn systemz.wsgi
+web: gunicorn e_voting.wsgi
