@@ -1,0 +1,119 @@
+{% extends "voting/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+  /* container */
+  .login-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
+    text-align: center;
+    max-width: 380px;
+    margin: 60px auto;
+  }
+
+  .login-logo img {
+    width: 100px;
+    margin-bottom: 12px;
+  }
+  .login-logo b { display:block; font-size:20px; margin-bottom:8px; }
+
+  .form-group { margin-bottom:12px; text-align:left; }
+  .form-group input {
+    width:100%;
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+  }
+
+  /* Green login button with pulsing neon glow */
+  #login-btn {
+    background-color: #28a745; /* button stays green */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    width: 100%;
+    transition: transform 0.12s ease;
+    animation: glowPulse 2s infinite ease-in-out; /* smooth loop */
+  }
+
+  @keyframes glowPulse {
+    0% {
+      box-shadow: 0 0 5px rgba(0,255,0,0.5),
+                  0 0 15px rgba(0,255,0,0.4);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(0,255,0,0.9),
+                  0 0 40px rgba(0,255,0,0.7),
+                  0 0 60px rgba(0,255,0,0.5);
+    }
+    100% {
+      box-shadow: 0 0 5px rgba(0,255,0,0.5),
+                  0 0 15px rgba(0,255,0,0.4);
+    }
+  }
+
+  /* Stronger flare while active (click) */
+  #login-btn:active {
+    transform: scale(0.985);
+    box-shadow: 0 0 30px rgba(0,255,0,1),
+                0 0 70px rgba(0,255,0,1),
+                inset 0 0 12px rgba(0,255,0,0.45);
+  }
+
+  /* register link styled as button (kept orange) */
+  .register-btn {
+    display:inline-block;
+    margin-top:12px;
+    padding:10px 18px;
+    background:#ff9800;
+    color:#fff;
+    border-radius:6px;
+    text-decoration:none;
+    font-weight:700;
+  }
+  .register-btn:hover { filter:brightness(0.95); }
+
+  /* responsive tweak */
+  @media (max-width:420px) {
+    .login-box { margin: 20px; padding:20px; width: auto; }
+    .login-logo img { width:84px; }
+  }
+</style>
+
+<div class="login-box">
+  <div class="login-logo">
+    <img src="{% static 'images/ctulogo.png' %}" alt="CTU Logo">
+    <b>CTU MOALBOAL VOTING WEBSITE</b>
+  </div>
+
+  <form id="loginForm" action="{% url 'account_login' %}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="text" name="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" required>
+    </div>
+
+    <button id="login-btn" type="submit" name="login">
+      <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp; Log In
+    </button>
+  </form>
+
+  <a href="{% url 'account_register' %}" class="register-btn">Register</a>
+</div>
+
+{% endblock content %}
