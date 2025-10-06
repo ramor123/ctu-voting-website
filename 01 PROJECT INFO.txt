@@ -1,12 +1,12 @@
-**Log on to codeastro.com for more projects!**
 
-**Developed By Owonubi Job Sunday**
 
-**Instructions**
+
+
+Instructions para di malimtan boshit
 - Install the Requirements: pip install -r requirements.txt
-- Then, make database migrations: python manage.py makemigrations
+- Then, himo database migrations: python manage.py makemigrations
 - python manage.py migrate
-- And finally, run the application: python manage.py runserver
+- nya, run the application: python manage.py runserver
 
 
-**For Admin Login Credentials, please create one using superuser!**
+Admin Login Credentials  please create one using superuser 
