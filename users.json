@@ -1,0 +1,202 @@
+[
+{
+  "model": "account.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$l6XZmZwuCEHnRS8JA0S27j$KF0D5CWALj9ujuxBfk1qS67mh4Ao23RyynMs8QPriQ0=",
+    "last_login": "2025-10-01T00:44:26.562Z",
+    "is_superuser": true,
+    "first_name": "Administrator",
+    "last_name": "System",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-09-22T04:14:50.555Z",
+    "email": "romarloquinario@gmail.com",
+    "user_type": "1",
+    "created_at": "2025-09-22T04:14:54.574Z",
+    "updated_at": "2025-09-22T04:14:54.574Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$j4zA3dYH6qimHFOaXD2IUi$e86eadBx7mnreYUg+7oFLZAAlKnDgR3d4LxiOSziK7w=",
+    "last_login": "2025-09-22T04:36:01.946Z",
+    "is_superuser": false,
+    "first_name": "Tresha",
+    "last_name": "Homecillo",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-09-22T04:35:26.702Z",
+    "email": "homecillotreshamarie@gmail.com",
+    "user_type": "2",
+    "created_at": "2025-09-22T04:35:31.021Z",
+    "updated_at": "2025-09-22T04:35:31.021Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$eQwAOo7xBz3hMZ0TZhUBaJ$haq7MbdfayjwPCqJjKd1vo0hXShaEQw9t1r6yzBEiTw=",
+    "last_login": "2025-09-22T04:40:43.217Z",
+    "is_superuser": true,
+    "first_name": "Administrator",
+    "last_name": "System",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-09-22T04:39:04.594Z",
+    "email": "bansinofgreed12@gmail.com",
+    "user_type": "1",
+    "created_at": "2025-09-22T04:39:08.627Z",
+    "updated_at": "2025-09-22T04:39:08.627Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$08zVFIFoeiI4SH6n08hGv9$yZCIekXHWWCB1p655JjyyBq/Wb3g7eKLH3gJSSwjpc8=",
+    "last_login": "2025-09-25T13:24:01.985Z",
+    "is_superuser": false,
+    "first_name": "Klay",
+    "last_name": "Thompson",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-09-25T13:23:46.636Z",
+    "email": "kahoy@gmail.com",
+    "user_type": "2",
+    "created_at": "2025-09-25T13:23:50.405Z",
+    "updated_at": "2025-09-25T13:23:50.405Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$oQyNmhLI0pxt3JFvONjngg$h4o4A+6mF/nmQGcyfT7y+m5Z9yZEAuGspwN0r/QR8W4=",
+    "last_login": "2025-09-25T13:25:14.912Z",
+    "is_superuser": false,
+    "first_name": "baka",
+    "last_name": "kabaw",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-09-25T13:24:59.677Z",
+    "email": "sus@gmail.com",
+    "user_type": "2",
+    "created_at": "2025-09-25T13:25:03.984Z",
+    "updated_at": "2025-09-25T13:25:03.984Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Fk9wmiVcxCpLHy5nRTiiTQ$Y702R7vGHwWKWnOOVYVK+P+F4Mf30d+XoikM+NNX0wM=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Ian jay",
+    "last_name": "Loquinario",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-09-28T13:51:52.842Z",
+    "email": "ianloquinario8@gmail.com",
+    "user_type": "2",
+    "created_at": "2025-09-28T13:51:57.176Z",
+    "updated_at": "2025-09-28T13:51:57.176Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$zvu29OJCYSqjDlNWQkz2rL$T74J0fKWYGZCno2yGxcvNQ0kFlm3zazHE+Fq2SkSH+s=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Romar",
+    "last_name": "Loquinario",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-09-28T13:53:43.482Z",
+    "email": "smackthat1432@gmail.com",
+    "user_type": "2",
+    "created_at": "2025-09-28T13:53:47.451Z",
+    "updated_at": "2025-09-28T13:53:47.451Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$a5qVd9CDNMfaHiVCUGmd4B$C4oj8/xbJLO2BXxx46SoYL4PC//TGzaBnv0+7tAp28c=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "lebron",
+    "last_name": "james",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T00:53:36.334Z",
+    "email": "lebronjames1@gmail.com",
+    "user_type": "2",
+    "created_at": "2025-10-01T00:53:45.444Z",
+    "updated_at": "2025-10-01T00:53:45.444Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$V9Ox1TgAVCmAguW0JcA2dt$dMFJApwgVnhfrPp0Vr80rNaU5RlPmoWDEbPBA1bCiO0=",
+    "last_login": "2025-10-01T00:56:28.819Z",
+    "is_superuser": false,
+    "first_name": "lebrono",
+    "last_name": "james",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-01T00:56:11.124Z",
+    "email": "lebronjames@gmail.com",
+    "user_type": "2",
+    "created_at": "2025-10-01T00:56:15.233Z",
+    "updated_at": "2025-10-01T00:56:15.233Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "account.customuser",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$ZdMcqWRuHe9LctiolDF052$ElTJotBZPftcqQ9fHQiJG5WeGO5LGhf+j99XkUqOX2E=",
+    "last_login": null,
+    "is_superuser": true,
+    "first_name": "Administrator",
+    "last_name": "System",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-10-07T02:15:25.015Z",
+    "email": "ivymariehomecillo@gmail.com",
+    "user_type": "1",
+    "created_at": "2025-10-07T02:15:28.852Z",
+    "updated_at": "2025-10-07T02:15:28.852Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
