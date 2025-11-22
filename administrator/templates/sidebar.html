@@ -1,81 +1,124 @@
 {% load static %}
 <style>
-  /* ===== SIDEBAR SLIDE-IN ANIMATION ===== */
-  @keyframes sidebarSlide {
-    0% { transform: translateX(-100%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
+  /* ===========================
+      SIDEBAR FIXES + IMPROVED UI
+     =========================== */
+
+  /* Keep desktop sidebar always visible */
+  @media (min-width: 769px) {
+      body.sidebar-collapse,
+      body.sidebar-open {
+          overflow: visible !important;
+      }
+      .main-sidebar {
+          transform: none !important;
+          position: fixed !important;
+          width: 230px !important;
+          left: 0 !important;
+          top: 0 !important;
+      }
   }
 
+  /* Sidebar appearance */
   .main-sidebar {
-    background-color: #b8860b; /* Darker gold */
-    animation: sidebarSlide 0.5s ease-out forwards;
+      background-color: #b8860b;
+      height: 100vh;
   }
 
-  /* ===== SIDEBAR MENU ITEM STYLE ===== */
+  /* MENU STYLE */
   .sidebar-menu li a {
-    color: white !important;
-    transition: background-color 0.3s ease, padding-left 0.3s ease;
+      color: white !important;
+      transition: background-color 0.3s ease, padding-left 0.3s ease;
   }
 
   .sidebar-menu li a:hover {
-    background-color: rgba(255, 215, 0, 0.2); /* Light gold highlight */
-    padding-left: 10px;
+      background-color: rgba(255, 215, 0, 0.2);
+      padding-left: 10px;
   }
 
-  /* ===== SIDEBAR HEADERS ===== */
+  /* HEADERS */
   .sidebar-menu .header {
-    color: #fff;
-    background: #ffffffff; /* slightly darker gold for headers */
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 1px;
+      background: rgba(0, 0, 0, 0.15);
+      color: white !important;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+      padding: 10px 15px;
   }
 
-  /* ===== USER PANEL ===== */
+  /* USER PANEL */
   .user-panel {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 5px;
-    transition: background-color 0.3s ease;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 10px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
   }
 
-  .user-panel:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+  .user-panel .image img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
   }
 
-  .user-panel p, .user-panel a {
-    color: white;
+  .user-panel .info {
+      margin-left: 10px;
+      color: white;
+      line-height: 1.2;
+  }
+
+  .user-panel .info a {
+      color: #dfffd3;
+      font-size: 12px;
   }
 </style>
 
+<script>
+  /* Force desktop sidebar to stay open */
+  document.addEventListener("DOMContentLoaded", function() {
+      if (window.innerWidth > 768) {
+          document.body.classList.remove("sidebar-collapse");
+          document.body.classList.remove("sidebar-open");
+      }
+  });
+</script>
+
 <aside class="main-sidebar">
   <section class="sidebar">
-    <!-- Sidebar user panel -->
+
+    <!-- USER PANEL -->
     <div class="user-panel">
-      <div class="pull-left image">
-        <img src="{% static 'images/userplaceholder.png' %}" class="img-circle" alt="User Image">
+      <div class="image">
+        <img src="{% static 'images/userplaceholder.png' %}" alt="User Image">
       </div>
-      <div class="pull-left info">
+      <div class="info">
         <p>{{ request.user }}</p>
         <a><i class="fa fa-circle text-success"></i> Active Now</a>
       </div>
     </div>
 
+    <!-- MENU -->
     <ul class="sidebar-menu" data-widget="tree">
+
       {% if request.user.user_type == '1' %}
-      <li class="header">REPORTS</li>
-      <li><a href="{% url 'adminDashboard' %}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-      <li><a href="{% url 'viewVotes' %}"><span class="glyphicon glyphicon-lock"></span> <span>Votes</span></a></li>
-      <li class="header">MANAGE</li>
-      <li><a href="{% url 'adminViewVoters' %}"><i class="fa fa-users"></i> <span>Voters</span></a></li>
-      <li><a href="{% url 'viewPositions' %}"><i class="fa fa-tasks"></i> <span>Positions</span></a></li>
-      <li><a href="{% url 'viewCandidates' %}"><i class="fa fa-black-tie"></i> <span>Candidates</span></a></li>
-      <li class="header">SETTINGS</li>
-      <li><a href="{% url 'ballot_position' %}"><i class="fa fa-file-text"></i> <span>Ballot Position</span></a></li>
-      <li><a href="#config" data-toggle="modal"><i class="fa fa-font"></i> <span>Election Title</span></a></li>
+        <li class="header">Reports</li>
+        <li><a href="{% url 'adminDashboard' %}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{% url 'viewVotes' %}"><i class="glyphicon glyphicon-lock"></i> Votes</a></li>
+
+        <li class="header">Manage</li>
+        <li><a href="{% url 'adminViewVoters' %}"><i class="fa fa-users"></i> Voters</a></li>
+        <li><a href="{% url 'viewPositions' %}"><i class="fa fa-tasks"></i> Positions</a></li>
+        <li><a href="{% url 'viewCandidates' %}"><i class="fa fa-black-tie"></i> Candidates</a></li>
+
+        <li class="header">Settings</li>
+        <li><a href="{% url 'ballot_position' %}"><i class="fa fa-file-text"></i> Ballot Position</a></li>
+        <li><a href="#config" data-toggle="modal"><i class="fa fa-font"></i> Election Title</a></li>
       {% endif %}
-      <li class="header">EXIT</li>
-      <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> <span>Logout</span></a></li>
+
+      <li class="header">Exit</li>
+      <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> Logout</a></li>
+
     </ul>
   </section>
 </aside>

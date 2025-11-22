@@ -85,27 +85,38 @@ def generate_ballot(display_controls=False):
         # Build candidate list
         for candidate in candidates:
 
-            # Instruction + Input Selector
+            # Instruction + Input Selector (NEW minimal-green style)
             if position.max_vote > 1:
                 instruction = f"You may select up to {position.max_vote} candidates"
-                input_box = f'<input type="checkbox" value="{candidate.id}" class="flat-red {position_name}" name="{position_name}[]">'
+                input_box = f'''
+                    <input type="checkbox" value="{candidate.id}"
+                           class="minimal-green {position_name}"
+                           name="{position_name}[]">
+                '''
             else:
                 instruction = "Select only one candidate"
-                input_box = f'<input type="radio" value="{candidate.id}" class="flat-red {position_name}" name="{position_name}">'
+                input_box = f'''
+                    <input type="radio" value="{candidate.id}"
+                           class="minimal-green {position_name}"
+                           name="{position_name}">
+                '''
 
-            # FIXED: Proper Django media URL
             image_url = candidate.photo.url if candidate.photo else ""
 
             candidates_data += f"""
-                <li>
+                <li style="margin-bottom:20px;">
                     {input_box}
-                    <button type="button" class="btn btn-primary btn-sm btn-flat clist platform"
+                    <button type="button" class="btn btn-primary btn-sm btn-flat platform"
                         data-fullname="{candidate.fullname}"
                         data-bio="{candidate.bio}">
                         <i class="fa fa-search"></i> Platform
                     </button>
-                    <img src="{image_url}" height="100px" width="100px" class="clist">
-                    <span class="cname clist">{candidate.fullname}</span>
+
+                    <img src="{image_url}" height="100" width="100" class="clist" style="margin-left:10px; border-radius:6px;">
+
+                    <span class="cname clist" style="font-size:20px; margin-left:10px;">
+                        {candidate.fullname}
+                    </span>
                 </li>
             """
 
@@ -113,7 +124,6 @@ def generate_ballot(display_controls=False):
         up = "disabled" if position.priority == 1 else ""
         down = "disabled" if position.priority == positions.count() else ""
 
-        # Box wrapper
         output += f"""
         <div class="row">
         <div class="col-xs-12">
@@ -123,7 +133,6 @@ def generate_ballot(display_controls=False):
                 <h3 class="box-title"><b>{name}</b></h3>
         """
 
-        # Optional controls
         if display_controls:
             output += f"""
                 <div class="pull-right box-tools">
@@ -136,7 +145,6 @@ def generate_ballot(display_controls=False):
                 </div>
             """
 
-        # Body
         output += f"""
             </div>
 
@@ -151,7 +159,7 @@ def generate_ballot(display_controls=False):
                 </p>
 
                 <div id="candidate_list">
-                    <ul>
+                    <ul style="list-style-type:none; padding-left:0;">
                         {candidates_data}
                     </ul>
                 </div>
@@ -162,12 +170,13 @@ def generate_ballot(display_controls=False):
         </div>
         """
 
-        # Fix priority order
+        # Fix ordering
         position.priority = num
         position.save()
         num += 1
 
     return output
+
 
 
 def fetch_ballot(request):

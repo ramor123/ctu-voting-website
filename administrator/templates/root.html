@@ -7,9 +7,7 @@
   <div class="wrapper">
 
  {% include "navbar.html" %}
-   
  {% include "sidebar.html" %}
- 
  
  <div class="modal fade" id="config">
   <div class="modal-dialog">
@@ -21,11 +19,10 @@
           </div>
           <div class="modal-body">
             <div class="text-center">
-                              <form class="form-horizontal" method="POST" action="{% url 'ballot_title'  %}">
+              <form class="form-horizontal" method="POST" action="{% url 'ballot_title'  %}">
                 <div class="form-group">
                   {% csrf_token %}
                   <label for="title" class="col-sm-3 control-label">Title</label>
-
                   <div class="col-sm-9">
                     <input type="text" class="form-control" required id="title" name="title" value="{{ TITLE }}">
                   </div>
@@ -40,32 +37,82 @@
       </div>
   </div>
 </div>
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+
+<div class="content-wrapper">
     <section class="content-header">
-      <h1>
-        {{ page_title }}
-      </h1>
+      <h1>{{ page_title }}</h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">{{ page_title }}</li>
       </ol>
     </section>
-  {% block content %}
-    
-  {% endblock content %}
-  </div>
-{% include "footer.html" %}
-{% block modal %}
-  
-{% endblock modal %}
+
+    {% block content %}
+    {% endblock content %}
 </div>
+
+{% include "footer.html" %}
+{% block modal %}{% endblock modal %}
+</div>
+
 {% include "scripts.html"%}
-{% block custom_js %}
-  
-{% endblock custom_js %}
+{% block custom_js %}{% endblock custom_js %}
 </body>
-
-
 </html>
+
+<style>
+/* Make AdminLTE 2 responsive for ballot layout */
+.content-wrapper {
+    padding: 10px !important;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper,
+    .content-header > h1 {
+        text-align: center;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .main-sidebar {
+        position: fixed;
+        width: 240px !important;
+    }
+}
+
+/* ★ FIX: FORCE DESKTOP SIDEBAR ON WIDE SCREENS */
+@media (min-width: 769px) {
+
+    /* force correct behavior */
+    .main-sidebar {
+        position: absolute !important;
+        transform: none !important;
+        width: 230px !important;
+    }
+
+    /* prevent mobile slide */
+    body.sidebar-open .main-sidebar,
+    body.sidebar-collapse .main-sidebar {
+        transform: none !important;
+    }
+}
+</style>
+
+<script>
+/* ★ FIX: PREVENT ADMINLTE FROM COLLAPSING SIDEBAR ON DESKTOP */
+document.addEventListener("DOMContentLoaded", function() {
+    if (window.innerWidth > 768) {
+        document.body.classList.remove("sidebar-collapse");
+        document.body.classList.remove("sidebar-open");
+    }
+});
+
+window.addEventListener("resize", function() {
+    if (window.innerWidth > 768) {
+        document.body.classList.remove("sidebar-collapse");
+        document.body.classList.remove("sidebar-open");
+    }
+});
+</script>
