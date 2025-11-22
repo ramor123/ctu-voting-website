@@ -1,47 +1,119 @@
 {% extends "root.html" %}
 {% block content %}
 
+<style>
+    .confirm-wrapper {
+        max-width: 520px;
+        margin: 40px auto;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .confirm-card {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 35px 40px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+        border: 1px solid #ebebeb;
+    }
+
+    .confirm-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #222222;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .confirm-subtext {
+        text-align: center;
+        font-size: 16px;
+        color: #555555;
+        margin-top: 15px;
+        font-weight: 500;
+    }
+
+    .confirm-name {
+        font-size: 18px;
+        color: #333;
+        font-weight: 600;
+        padding: 18px 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        text-align: center;
+    }
+
+    .confirm-buttons {
+        margin-top: 25px;
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+    }
+
+    .btn-master {
+        padding: 12px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 8px !important;
+        min-width: 160px;
+        transition: 0.25s ease;
+    }
+
+    .btn-master-success {
+        background: #39b157;
+        color: #fff;
+        border: none;
+    }
+    .btn-master-success:hover {
+        background: #2e9649;
+    }
+
+    .btn-master-danger {
+        background: #d9534f;
+        color: #fff;
+        border: none;
+    }
+    .btn-master-danger:hover {
+        background: #c64744;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
 <section class="content">
-    <div class="row">
-        <div class="col-sm-6 col-sm-offset-3">
 
-            <div class="box box-primary">
-                <div class="box-header with-border text-center">
-                    <h3 class="box-title"><b>Confirm Your Identity</b></h3>
-                </div>
-                <div class="box-body">
-                    <p><b>Name:</b> {{ full_name }}</p>
-                    <p><b>Email:</b> {{ email }}</p>
-                    <p><b>Phone:</b> {{ phone }}</p>
-                    <p><b>Verified:</b> {{ verified }}</p>
+    <div class="confirm-wrapper">
+        <div class="confirm-card">
 
-                    <hr>
+            <h3 class="confirm-title">Confirm Your Identity</h3>
 
-                    <p class="text-center">
-                        <b>Is this your correct information?</b>
-                    </p>
-
-                    <!-- IMPORTANT: add action to POST back to confirm url -->
-                    <form method="POST" action="{% url 'confirmation_page' %}">
-                        {% csrf_token %}
-
-                        <div class="text-center">
-
-                            <button type="submit" name="action" value="yes" class="btn btn-success btn-flat">
-                                Yes, continue to vote
-                            </button>
-                            <button type="submit" name="action" value="no" class="btn btn-danger btn-flat">
-                                No, go back to login
-                            </button>
-
-                        </div>
-                    </form>
-
-                </div>
+            <div class="confirm-name">
+                <span><b>Name:</b> {{ full_name }}</span>
             </div>
+
+            <p class="confirm-subtext">
+                Is this your correct information?
+            </p>
+
+            <form method="POST" action="{% url 'confirmation_page' %}">
+                {% csrf_token %}
+                
+                <div class="confirm-buttons">
+                    <button type="submit" name="action" value="yes" class="btn btn-master btn-master-success">
+                        Yes, continue to vote
+                    </button>
+
+                    <button type="submit" name="action" value="no" class="btn btn-master btn-master-danger">
+                        No, go back to login
+                    </button>
+                </div>
+            </form>
 
         </div>
     </div>
+
 </section>
 
 {% endblock %}
