@@ -85,7 +85,7 @@ def generate_ballot(display_controls=False):
         # Build candidate list
         for candidate in candidates:
 
-            # Instruction + Input Selector (NEW minimal-green style)
+            # Instruction + Input Selector
             if position.max_vote > 1:
                 instruction = f"You may select up to {position.max_vote} candidates"
                 input_box = f'''
@@ -103,22 +103,40 @@ def generate_ballot(display_controls=False):
 
             image_url = candidate.photo.url if candidate.photo else ""
 
+            # MOBILE-FRIENDLY CANDIDATE ITEM (NO FORCED IMAGE SIZE)
             candidates_data += f"""
-                <li style="margin-bottom:20px;">
-                    {input_box}
-                    <button type="button" class="btn btn-primary btn-sm btn-flat platform"
-                        data-fullname="{candidate.fullname}"
-                        data-bio="{candidate.bio}">
-                        <i class="fa fa-search"></i> Platform
-                    </button>
+<li class="candidate-item" style="margin-bottom:15px; list-style:none;">
+    <div class="row">
 
-                    <img src="{image_url}" height="100" width="100" class="clist" style="margin-left:10px; border-radius:6px;">
+        <!-- Input -->
+        <div class="col-xs-2 col-sm-1 text-center" style="margin-top:15px;">
+            {input_box}
+        </div>
 
-                    <span class="cname clist" style="font-size:20px; margin-left:10px;">
-                        {candidate.fullname}
-                    </span>
-                </li>
-            """
+        <!-- Image -->
+        <div class="col-xs-4 col-sm-2 text-center">
+            <img src="{image_url}"
+                 class="img-responsive"
+                 style="border-radius:6px;">
+        </div>
+
+        <!-- Name + Platform -->
+        <div class="col-xs-6 col-sm-9">
+            <span style="font-size:16px; font-weight:bold; display:block; margin-top:5px;">
+                {candidate.fullname}
+            </span>
+
+            <button type="button"
+                class="btn btn-primary btn-xs btn-flat platform"
+                data-fullname="{candidate.fullname}"
+                data-bio="{candidate.bio}">
+                <i class="fa fa-search"></i> Platform
+            </button>
+        </div>
+
+    </div>
+</li>
+"""
 
         # Up / Down Buttons
         up = "disabled" if position.priority == 1 else ""
@@ -128,7 +146,7 @@ def generate_ballot(display_controls=False):
         <div class="row">
         <div class="col-xs-12">
         <div class="box box-solid" id="{position.id}">
-        
+
             <div class="box-header with-border">
                 <h3 class="box-title"><b>{name}</b></h3>
         """
@@ -149,7 +167,8 @@ def generate_ballot(display_controls=False):
             </div>
 
             <div class="box-body">
-                <p>{instruction}
+                <p>
+                    {instruction}
                     <span class="pull-right">
                         <button type="button" class="btn btn-success btn-sm btn-flat reset"
                             data-desc="{position_name}">
@@ -163,6 +182,7 @@ def generate_ballot(display_controls=False):
                         {candidates_data}
                     </ul>
                 </div>
+
             </div>
 
         </div>
@@ -176,6 +196,7 @@ def generate_ballot(display_controls=False):
         num += 1
 
     return output
+
 
 
 
