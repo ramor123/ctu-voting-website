@@ -61,9 +61,6 @@
             <thead>
               <th>Firstname</th>
               <th>Lastname</th>
-              <th>Course</th>
-              <th>Year & Section</th>
-              <th>Year Level</th>
               <th>Email</th>
               <th>Phone</th>
               <th>Action</th>
@@ -73,9 +70,6 @@
               <tr>
                 <td>{{ voter.admin.first_name }}</td>
                 <td>{{ voter.admin.last_name }}</td>
-                <td>{{ voter.course }}</td>
-                <td>{{ voter.year_section }}</td>
-                <td>{{ voter.year_level }}</td>
                 <td>{{ voter.admin.email }}</td>
                 <td>{{ voter.phone }}</td>
                 <td>
@@ -133,8 +127,12 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-            <button type="submit" class="btn btn-success btn-flat"><i class="fa fa-save"></i> Save</button>
+            <button type="button" class="btn btn-danger btn-flat pull-left" data-dismiss="modal">
+              <i class="fa fa-close"></i> Close
+            </button>
+            <button type="submit" class="btn btn-success btn-flat">
+              <i class="fa fa-save"></i> Save
+            </button>
           </div>
 
         </form>
@@ -170,27 +168,6 @@
             <label class="col-sm-3 control-label">Lastname</label>
             <div class="col-sm-9">
               <input type="text" id="edit_lastname" name="last_name" class="form-control">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Course</label>
-            <div class="col-sm-9">
-              <input type="text" id="edit_course" name="course" class="form-control">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Year & Section</label>
-            <div class="col-sm-9">
-              <input type="text" id="edit_year_section" name="year_section" class="form-control">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Year Level</label>
-            <div class="col-sm-9">
-              <input type="text" id="edit_year_level" name="year_level" class="form-control">
             </div>
           </div>
 
@@ -292,11 +269,6 @@
               $('#edit_lastname').val(response.last_name);
               $('#edit_phone').val(response.phone);
               $('#edit_email').val(response.email);
-
-              // NEW FIELDS
-              $('#edit_course').val(response.course);
-              $('#edit_year_section').val(response.year_section);
-              $('#edit_year_level').val(response.year_level);
 
               $('.fullname').html(response.first_name + ' ' + response.last_name);
           }
