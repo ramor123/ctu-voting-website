@@ -1,0 +1,47 @@
+{% extends "root.html" %}
+{% block content %}
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+
+            <div class="box box-primary">
+                <div class="box-header with-border text-center">
+                    <h3 class="box-title"><b>Confirm Your Identity</b></h3>
+                </div>
+                <div class="box-body">
+                    <p><b>Name:</b> {{ full_name }}</p>
+                    <p><b>Email:</b> {{ email }}</p>
+                    <p><b>Phone:</b> {{ phone }}</p>
+                    <p><b>Verified:</b> {{ verified }}</p>
+
+                    <hr>
+
+                    <p class="text-center">
+                        <b>Is this your correct information?</b>
+                    </p>
+
+                    <!-- IMPORTANT: add action to POST back to confirm url -->
+                    <form method="POST" action="{% url 'confirmation_page' %}">
+                        {% csrf_token %}
+
+                        <div class="text-center">
+
+                            <button type="submit" name="action" value="yes" class="btn btn-success btn-flat">
+                                Yes, continue to vote
+                            </button>
+                            <button type="submit" name="action" value="no" class="btn btn-danger btn-flat">
+                                No, go back to login
+                            </button>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

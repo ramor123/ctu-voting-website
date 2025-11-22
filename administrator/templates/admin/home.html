@@ -1,0 +1,185 @@
+{% extends 'root.html' %}
+{% load static %}
+{% block content %}
+<!-- Main content -->
+<section class="content">
+  <!-- Smooth transition styles -->
+  <style>
+    /* Smooth hover animation for small-box cards */
+    .small-box {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      background-color: #800000 !important; /* Maroon by default */
+      color: white !important;
+    }
+
+    .small-box .icon i {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .small-box:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      background-color: #a52a2a !important; /* Slightly lighter maroon on hover */
+    }
+
+    /* Fade-in animation for chart boxes */
+    .box.box-solid {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 0.6s ease forwards;
+      background-color: #fff !important; /* Keep chart box white */
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box">
+        <div class="inner">
+          <h3>{{ position_count }}</h3>
+          <p>No. of Positions</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-tasks"></i>
+        </div>
+        <a href="{% url 'viewPositions' %}" class="small-box-footer">More Info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box">
+        <div class="inner">
+          <h3>{{ candidate_count }}</h3>
+          <p>No. of Candidates</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-black-tie"></i>
+        </div>
+        <a href="{% url 'viewCandidates' %}" class="small-box-footer">More Info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box">
+        <div class="inner">
+          <h3>{{ voters_count }}</h3>
+          <p>Total Voters</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-users"></i>
+        </div>
+        <a href="{% url 'adminViewVoters' %}" class="small-box-footer">More Info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box">
+        <div class="inner">
+          <h3>{{ voted_voters_count }}</h3>
+          <p>Voters Voted</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-edit"></i>
+        </div>
+        <a href="{% url 'viewVotes' %}" class="small-box-footer">More Info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h3>Votes Tally
+        <span class="pull-right">
+          <a href="{% url 'printResult' %}" class="btn btn-success btn-sm btn-flat">
+            <span class="glyphicon glyphicon-print"></span> Print/Download PDF <i class="fa fa-download"></i>
+          </a>
+        </span>
+      </h3>
+    </div>
+  </div>
+
+  {% for position in positions %}
+  {% if not forloop.counter|divisibleby:2 %}
+  <div class='row'>
+  {% endif %}
+  <div class='col-sm-6'>
+    <div class='box box-solid'>
+      <div class='box-header with-border'>
+        <h4 class='box-title'><b>{{ position.name }}</b></h4>
+      </div>
+      <div class='box-body'>
+        <div class='chart'>
+          <canvas id='{{ position.name|slugify }}' style='height:200px'></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if forloop.counter|divisibleby:2 %}
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% if not forloop.counter|divisibleby:2 %}
+  </div>
+  {% endif %}
+</section>
+{% endblock content %}
+
+{% block custom_js %}
+<script src="{% static 'bower_components/chart.js/Chart.js' %}"></script>
+<script src="{% static 'bower_components/chart.js/Chart.HorizontalBar.js' %}"></script>
+
+{% for key, value in chart_data.items %}
+<script>
+  $(function () {
+    var description = '{{ key|safe|slugify }}';
+    var barChartCanvas = $('#' + description).get(0).getContext('2d');
+    var barChart = new Chart(barChartCanvas);
+    var barChartData = {
+      labels: {{ value.candidates|safe }},
+      datasets: [{
+        label: 'Votes',
+        fillColor: 'rgba(128,0,0,0.9)',
+        strokeColor: 'rgba(128,0,0,0.8)',
+        pointColor: '#800000',
+        pointStrokeColor: 'rgba(128,0,0,1)',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(128,0,0,1)',
+        data: {{ value.votes|safe }}
+      }]
+    };
+
+    var barChartOptions = {
+      scaleBeginAtZero: true,
+      scaleShowGridLines: true,
+      scaleGridLineColor: 'rgba(0,0,0,0.05)',
+      scaleGridLineWidth: 1,
+      scaleShowHorizontalLines: true,
+      scaleShowVerticalLines: true,
+      barShowStroke: true,
+      barStrokeWidth: 2,
+      barValueSpacing: 5,
+      barDatasetSpacing: 1,
+      responsive: true,
+      maintainAspectRatio: true,
+      animation: {
+        duration: 1200,
+        easing: "easeOutBounce"
+      }
+    };
+
+    barChartOptions.datasetFill = false;
+    barChart.HorizontalBar(barChartData, barChartOptions);
+  });
+</script>
+{% endfor %}
+{% endblock custom_js %}

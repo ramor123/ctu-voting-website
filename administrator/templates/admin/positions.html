@@ -1,0 +1,311 @@
+{% extends 'root.html' %}
+{% block content %}
+
+<section class="content">
+
+<style>
+/* ------------------------------
+   MATCHED COLORWAY + DESIGN
+   (Copied from your first file)
+-------------------------------- */
+
+/* --- GENERAL TABLE STYLING --- */
+table.table {
+    border-radius: 6px;
+    overflow: hidden;
+    background: #ffffff;
+}
+table.table thead {
+    background: #1a2226 !important;
+    color: white;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+table.table tbody tr:hover {
+    background: #f5f5f5;
+    transition: 0.2s ease;
+}
+
+/* --- BUTTONS --- */
+.btn-success {
+    background: #28a745 !important;
+    border: none;
+}
+.btn-primary {
+    background: #337ab7 !important;
+    border: none;
+}
+.btn-danger {
+    background: #d9534f !important;
+    border: none;
+}
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* --- BOX / CARD --- */
+.box {
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(209, 196, 19, 0.81);
+    border: none;
+}
+.box-header {
+    background: #ac190fff;
+    border-bottom: 1px solid #f39609ff;
+    padding: 15px 20px;
+    border-radius: 8px 8px 0 0;
+}
+.box-body {
+    padding: 20px;
+}
+
+/* --- MODALS --- */
+.modal-content {
+    border-radius: 10px !important;
+    box-shadow: 0 5px 20px rgba(245, 191, 15, 0.2);
+}
+.modal-header {
+    background: #59b7e6ff;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+.modal-title {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* --- FORM FIELDS --- */
+.form-group label {
+    font-weight: 600;
+    color: #000000ff;
+}
+input.form-control {
+    border-radius: 5px;
+    border: 1px solid #ad1c1cff;
+}
+input.form-control:focus {
+    border-color: #eeb90cff;
+    box-shadow: 0 0 5px rgba(241, 9, 9, 0.4);
+}
+
+</style>
+
+
+<div class="row">
+<div class="col-xs-12">
+<div class="box">
+
+    <div class="box-header with-border">
+        <a href="#addnew" data-toggle="modal" class="btn btn-success btn-sm btn-flat">
+            <i class="fa fa-plus"></i> Add New
+        </a>
+    </div>
+
+    <div class="box-body">
+        <table id="example1" class="table table-bordered table-hover table-striped">
+            <thead>
+                <th>Name</th>
+                <th>Maximum Votes</th>
+                <th>Priority</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                {% for position in positions %}
+                <tr>
+                    <td>{{ position.name }}</td>
+                    <td>{{ position.max_vote }}</td>
+                    <td>{{ position.priority }}</td>
+
+                    <td>
+                        <button class='btn btn-primary btn-sm edit btn-flat' data-id='{{ position.id }}'>
+                            <i class='fa fa-edit'></i> Edit
+                        </button>
+                        <button class='btn btn-danger btn-sm delete btn-flat' data-id='{{ position.id }}'>
+                            <i class='fa fa-trash'></i> Delete
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</div>
+</div>
+
+</section>
+
+{% endblock content %}
+
+
+{% block modal %}
+
+<!-- ADD NEW -->
+<div class="modal fade" id="addnew">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title"><b>Add New Position</b></h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'viewPositions' %}">
+                    {% csrf_token %}
+
+                    <div class="modal-body">
+                        {% for field in form1 %}
+                        <div class="form-group">
+                            <span class="text-danger">{{field.errors}}</span>
+                            {{field.label_tag}}
+                            {{field}}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-flat pull-left" data-dismiss="modal">
+                            <i class="fa fa-close"></i> Close
+                        </button>
+                        <button type="submit" class="btn btn-success btn-flat" name="add">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- EDIT -->
+<div class="modal fade" id="edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title"><b>Edit Position</b></h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'updatePosition' %}">
+                    {% csrf_token %}
+                    <input type="hidden" class="id" name="id">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="name" name="name" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Maximum Votes</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="max_vote" name="max_vote" class="form-control">
+                        </div>
+                    </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-flat pull-left" data-dismiss="modal">
+                    <i class="fa fa-close"></i> Close
+                </button>
+                <button type="submit" class="btn btn-success btn-flat" name="edit">
+                    <i class="fa fa-check-square-o"></i> Update
+                </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- DELETE -->
+<div class="modal fade" id="delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title"><b>Deleting...</b></h4>
+            </div>
+
+            <div class="modal-body">
+
+                <form class="form-horizontal" method="POST" action="{% url 'deletePosition' %}">
+                    {% csrf_token %}
+                    <input type="hidden" class="id" name="id">
+
+                    <div class="text-center">
+                        <p>DELETE POSITION</p>
+                        <h2 class="bold fullname"></h2>
+                    </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal">
+                    <i class="fa fa-close"></i> Close
+                </button>
+                <button type="submit" class="btn btn-danger btn-flat" name="delete">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock modal %}
+
+
+
+{% block custom_js %}
+<script>
+$(function() {
+    $(document).on('click', '.edit', function(e) {
+        e.preventDefault();
+        $('#edit').modal('show');
+        var id = $(this).data('id');
+        getRow(id);
+    });
+
+    $(document).on('click', '.delete', function(e) {
+        e.preventDefault();
+        $('#delete').modal('show');
+        var id = $(this).data('id');
+        getRow(id);
+    });
+});
+
+function getRow(id) {
+    $.ajax({
+        type: 'GET',
+        url: '{% url "viewPosition" %}',
+        data: { id: id },
+        dataType: 'json',
+        success: function(response) {
+            $('.id').val(response.id);
+            $('#name').val(response.name);
+            $('#max_vote').val(response.max_vote);
+            $('.fullname').html(response.name);
+        }
+    });
+}
+</script>
+{% endblock custom_js %}
+

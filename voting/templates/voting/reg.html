@@ -1,0 +1,119 @@
+{% extends "voting/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+  /* container */
+  .login-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
+    text-align: center;
+    max-width: 380px;
+    margin: 60px auto;
+  }
+
+  .login-logo img {
+    width: 90px;
+    margin-bottom: 10px;
+  }
+  .login-logo b {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .form-group input {
+    width:100%;
+    padding:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+  }
+
+  /* Green login button with pulsing neon glow */
+  #login-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.12s ease;
+    animation: glowPulse 2s infinite ease-in-out;
+  }
+
+  @keyframes glowPulse {
+    0% { box-shadow: 0 0 5px rgba(0,255,0,0.5); }
+    50% { box-shadow: 0 0 25px rgba(0,255,0,0.9); }
+    100% { box-shadow: 0 0 5px rgba(0,255,0,0.5); }
+  }
+
+  #login-btn:active {
+    transform: scale(0.985);
+    box-shadow: 0 0 30px rgba(0,255,0,1),
+                0 0 70px rgba(0,255,0,1);
+  }
+
+  /* small back to login button */
+  .back-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 14px;
+    background: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .back-btn:hover {
+    filter: brightness(0.95);
+  }
+
+</style>
+
+<div class="login-box">
+
+  <div class="login-logo">
+    <img src="{% static 'images/ctulogo.png' %}" alt="CTU Logo">
+    <b>ADMIN LOGIN</b>
+  </div>
+
+  <form action="{% url 'account_login' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="text" name="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" required>
+    </div>
+
+    <button id="login-btn" type="submit" name="login">
+      <i class="fa fa-sign-in"></i>&nbsp; Login
+    </button>
+
+  </form>
+
+  <!-- Back to main login -->
+  <a href="{% url 'account_login' %}" class="back-btn">
+    <i class="fa fa-arrow-left"></i> Back to Login
+  </a>
+
+</div>
+
+{% endblock content %}

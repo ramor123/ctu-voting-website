@@ -1,0 +1,177 @@
+{% extends 'root.html' %}
+
+{% block content %}
+<section class="content">
+  <h1 class="page-header text-center title"><b>{{ TITLE }}</b></h1>
+
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+
+      <!-- Error Alert -->
+      <div class="alert alert-danger alert-dismissible" id="alert" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <span class="message"></span>
+      </div>
+
+      <!-- Ballot Form -->
+      <form method="POST" id="ballotForm" action="{% url 'submit_ballot' %}">
+        {% csrf_token %}
+        {{ ballot|safe }}
+
+        <div class="text-center" style="margin-top: 20px;">
+          <button type="button" class="btn btn-success btn-flat" id="preview">
+            <i class="fa fa-file-text"></i> Preview
+          </button>
+
+          <button type="submit" class="btn btn-primary btn-flat" name="submit_vote">
+            <i class="fa fa-check-square-o"></i> Submit
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+
+
+{% block custom_js %}
+<script>
+$(document).ready(function() {
+
+    /* ---------------------------------------------------
+       iCheck Styling Init
+    --------------------------------------------------- */
+    $('input[type="checkbox"], input[type="radio"]').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    });
+
+    /* ---------------------------------------------------
+       Reset Button — Unchecks a whole group
+    --------------------------------------------------- */
+    $(document).on('click', '.reset', function(e) {
+        e.preventDefault();
+        let desc = $(this).data('desc');
+        $('.' + desc).iCheck('uncheck');
+    });
+
+    /* ---------------------------------------------------
+       Candidate Platform Modal
+    --------------------------------------------------- */
+    $(document).on('click', '.platform', function(e) {
+        e.preventDefault();
+        let platform = $(this).data('bio');
+        let fullname = $(this).data('fullname');
+
+        $('.candidate').text(fullname);
+        $('#plat_view').html(platform);
+        $('#bio').modal('show');
+    });
+
+    /* ---------------------------------------------------
+       Preview Vote Before Submission
+    --------------------------------------------------- */
+    $('#preview').on('click', function(e) {
+        e.preventDefault();
+
+        var formData = $('#ballotForm').serialize();
+
+        // Prevent empty form preview
+        if (formData.trim() === "" || formData.search("&") < 0) {
+            toastr.error('You must vote at least one candidate', "Preview Error");
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "preview_vote" %}',
+            data: formData,
+            dataType: 'json',
+
+            success: function(response) {
+                if (response.error) {
+                    var errmsg = '';
+                    var messages = response.message;
+
+                    for (i in messages) {
+                        errmsg += messages[i] + "<br>";
+                    }
+
+                    toastr.error(errmsg, "Preview Error");
+
+                } else {
+                    $('#preview_body').html(response.list);
+                    $('#preview_modal').modal('show');
+                }
+            },
+
+            error: function() {
+                toastr.error("There was a server error. Try again.", "Error");
+            }
+        });
+    });
+
+});
+</script>
+{% endblock custom_js %}
+
+
+
+{% block modal %}
+
+<!-- Candidate Bio Modal -->
+<div class="modal fade" id="bio">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+        <h4 class="modal-title"><b><span class="candidate"></span></b></h4>
+      </div>
+
+      <div class="modal-body">
+        <p id="plat_view"></p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal">
+          <i class="fa fa-close"></i> Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Preview Modal -->
+<div class="modal fade" id="preview_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+        <h4 class="modal-title">Vote Preview</h4>
+      </div>
+
+      <div class="modal-body">
+        <div id="preview_body"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal">
+          <i class="fa fa-close"></i> Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock modal %}

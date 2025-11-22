@@ -1,0 +1,18 @@
+
+
+
+
+Instructions para di malimtan boshit
+- Install the Requirements: pip install -r requirements.txt
+- Then, himo database migrations: python manage.py makemigrations
+- python manage.py migrate
+- nya, run the application: python manage.py runserver
+
+
+Admin Login Credentials  please create one using superuser 
+for pip command py -m pip
+for changes:
+git status
+git add .
+git commit -m "Update settings.py for static files and WhiteNoise"
+git push origin main

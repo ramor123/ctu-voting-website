@@ -1,0 +1,168 @@
+{% extends 'root.html' %}
+
+{% block content %}
+
+<style>
+    :root {
+        --maroon: #7a0c0c;
+        --maroon-dark: #5a0000;
+        --gold: #f4e7b3;
+
+        --white: #ffffff;
+
+        --green: #28a745;
+        --yellow: #ffcc4d;
+        --red: #d9534f;
+    }
+
+    .box {
+        background: var(--white);
+        border: 1px solid var(--maroon);
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        padding-bottom: 10px;
+        color: #000; /* ensure black text */
+    }
+
+    .custom-header {
+        background-color: var(--maroon);
+        color: var(--gold);
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    table tr:nth-child(even) {
+        background: #fafafa;
+    }
+    table tr:nth-child(odd) {
+        background: #ffffff;
+    }
+    table td, table th {
+        vertical-align: middle !important;
+        color: #000;
+    }
+
+    .btn-maroon {
+        background: var(--maroon);
+        border-color: var(--maroon-dark);
+        color: white;
+    }
+    .btn-maroon:hover {
+        background: var(--maroon-dark);
+    }
+
+    .btn-green {
+        background: var(--green);
+        border-color: var(--green);
+        color: white;
+    }
+    .btn-green:hover {
+        background: #1e7e34;
+    }
+
+    .btn-yellow {
+        background: var(--yellow);
+        border-color: #d4a72c;
+        color: #000;
+    }
+    .btn-yellow:hover {
+        background: #e2b63d;
+    }
+
+    .btn-red {
+        background: var(--red);
+        border-color: #b52b27;
+        color: white;
+    }
+    .btn-red:hover {
+        background: #b52b27;
+    }
+
+    .modal-header {
+        background: var(--maroon);
+        color: white;
+    }
+
+    .modal-content {
+        border: 2px solid var(--maroon);
+        border-radius: 6px;
+    }
+</style>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1" id="content">
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+
+
+
+{% block custom_js %}
+
+<script>
+$(function() {
+    fetch();
+
+    $(document).on('click', '.reset', function(e) {
+        e.preventDefault();
+        var desc = $(this).data('desc');
+        $('.' + desc).iCheck('uncheck');
+    });
+
+    $(document).on('click', '.moveup', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $('#' + id).animate({
+            'marginTop': "-300px"
+        });
+        $.ajax({
+            type: 'GET',
+            url: '{% url "update_ballot_position" 1 "up" %}'.replace(1, id),
+            dataType: 'json',
+            success: function(response) {
+                if (!response.error) {
+                    fetch();
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '.movedown', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $('#' + id).animate({
+            'marginTop': "+300px"
+        });
+        $.ajax({
+            type: 'GET',
+            url: '{% url "update_ballot_position" 1 "down" %}'.replace(1, id),
+            dataType: 'json',
+            success: function(response) {
+                if (!response.error) {
+                    fetch();
+                }
+            }
+        });
+    });
+});
+
+function fetch() {
+    $.ajax({
+        type: 'GET',
+        url: '{% url "fetch_ballot" %}',
+        dataType: 'json',
+        success: function(response) {
+            $('#content').html(response).iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            });
+        }
+    });
+}
+</script>
+
+{% endblock custom_js %}
