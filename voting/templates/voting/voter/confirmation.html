@@ -5,71 +5,61 @@
     .confirm-wrapper {
         max-width: 520px;
         margin: 40px auto;
-        padding: 0 15px;
-        animation: fadeIn 0.4s ease;
+        animation: fadeIn 0.5s ease;
     }
 
     .confirm-card {
         background: #ffffff;
         border-radius: 14px;
-        padding: 28px 25px;
-        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
-        border: 1px solid #e5e5e5;
+        padding: 35px 40px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+        border: 1px solid #ebebeb;
     }
 
     .confirm-title {
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 700;
-        color: #222;
+        color: #222222;
         text-align: center;
-        margin-bottom: 8px;
-        line-height: 1.3;
+        margin-bottom: 20px;
+    }
+
+    .confirm-name {
+        font-size: 18px;
+        color: #333;
+        font-weight: 600;
+        padding: 18px 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        text-align: center;
     }
 
     .confirm-subtext {
         text-align: center;
-        font-size: 15px;
+        font-size: 16px;
         color: #555;
-        margin-top: 14px;
-        font-weight: 500;
-    }
-
-    .confirm-name {
-        font-size: 17px;
-        color: #333;
-        font-weight: 600;
-        padding: 16px 0;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-        text-align: center;
-        word-wrap: break-word;
+        margin-top: 15px;
+        margin-bottom: 25px;
     }
 
     .confirm-buttons {
-        margin-top: 24px;
         display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    @media (min-width: 500px) {
-        .confirm-buttons {
-            flex-direction: row;
-            justify-content: center;
-        }
+        justify-content: center;
+        gap: 18px;
+        flex-wrap: wrap;
     }
 
     .btn-master {
-        padding: 12px 16px;
+        padding: 12px 22px;
         font-size: 15px;
         font-weight: 600;
         border-radius: 8px !important;
-        width: 100%;
+        min-width: 160px;
         transition: 0.25s ease;
     }
 
     .btn-master-success {
-        background: #3dbb59;
+        background: #39b157;
         color: #fff;
         border: none;
     }
@@ -109,16 +99,19 @@
 
             <form method="POST" action="{% url 'confirmation_page' %}">
                 {% csrf_token %}
-                
+
                 <div class="confirm-buttons">
-                    <button type="submit" name="action" value="yes" class="btn btn-master btn-master-success">
+                    <button type="submit" name="action" value="yes"
+                            class="btn btn-master btn-master-success">
                         Yes, continue to vote
                     </button>
 
-                    <button type="submit" name="action" value="no" class="btn btn-master btn-master-danger">
+                    <button type="submit" name="action" value="no"
+                            class="btn btn-master btn-master-danger">
                         No, go back to login
                     </button>
                 </div>
+
             </form>
 
         </div>

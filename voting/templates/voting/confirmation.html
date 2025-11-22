@@ -47,6 +47,7 @@
         display: flex;
         justify-content: center;
         gap: 18px;
+        flex-wrap: wrap;
     }
 
     .btn-master {
@@ -99,7 +100,7 @@
 
             <form method="POST" action="{% url 'confirmation_page' %}">
                 {% csrf_token %}
-                
+
                 <div class="confirm-buttons">
                     <button type="submit" name="action" value="yes" class="btn btn-master btn-master-success">
                         Yes, continue to vote
