@@ -68,7 +68,7 @@ def account_register(request):
 
 
 # ---------------------------
-# LOGOUT VIEW
+# LOGOUT VIEW (FINAL WORKING)
 # ---------------------------
 def account_logout(request):
     logout(request)
@@ -99,7 +99,6 @@ def account_confirm(request):
 # IDENTITY CONFIRMATION
 # ---------------------------
 def confirm_identity(request):
-
     user = request.user
 
     if user.user_type != "2":
