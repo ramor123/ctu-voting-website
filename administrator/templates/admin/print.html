@@ -1,46 +1,152 @@
 {% load static %}
 <html lang="en">
 <head>
-  <title>{{ title }}</title>
-  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}"">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+    
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            padding: 30px;
+            color: #333; /* Darker text */
+        }
 
+        /* Title Styling */
+        .page-title {
+            margin: 0 0 40px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff; /* Primary color separator */
+            color: #007bff;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        /* Position Table Container (Wrapper) */
+        .position-section {
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            border-radius: 6px; /* Soft rounded corners */
+            overflow: hidden; /* Ensures borders are contained */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Position Header Row */
+        .position-header {
+            background-color: #f8f9fa; /* Light grey background */
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        /* Table Headers */
+        .candidate-table th {
+            background-color: #e9ecef !important; /* Slightly darker header */
+            color: #495057;
+            font-weight: 600;
+            border-color: #ddd !important;
+        }
+
+        /* Table Body Rows */
+        .candidate-table td {
+            vertical-align: middle;
+            padding: 10px 8px;
+        }
+        
+        /* Winner Row Styling */
+        .winner-row {
+            background-color: #d4edda; /* Light green background for success */
+            color: #155724; /* Dark green text */
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* Specific Table Styling */
+        .candidate-table {
+            margin-bottom: 0; /* Remove default margin */
+            width: 100%;
+        }
+
+        /* Highlighting for Votes Column */
+        .vote-count {
+            font-weight: 700;
+            color: #007bff; /* Primary color for emphasis */
+            font-size: 1.1em;
+        }
+        
+        /* Highlighting the Winner's Name/Row (if possible, without changing backend logic) */
+        /* Assuming 'data.name' will contain the winner information in a subsequent iteration */
+        /* A better solution would be to add a 'is_winner' flag to data in the view */
+        .winner-candidate td {
+            background-color: #fff3cd; /* Light yellow background */
+            font-weight: 600;
+        }
+
+        /* Empty State */
+        .no-candidates {
+            background-color: #f2f2f2;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        /* Print media improvements (optional but recommended for receipts) */
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+            }
+            .page-title {
+                border-bottom: 2px solid #000;
+                color: #000;
+            }
+        }
+    </style>
 </head>
 <body>
-  
-  <div style="margin-top: -50px;" class="text-center font-weight-bold h1">
-  {{ title }} Result
-  </div>
-  <table id="example1" class="">
-{% for key, value in positions.items  %} {# Loop 1 #}
-<table id="example1" class="text-center table table-bordered">
-<tr>
-  <th style="background-color: aqua;" class="text-center" colspan="3">{{ key }} | Maximum Number Of Winners : {{ value.max_vote }}</th>
-  </tr>
-  <tr>
-  <th class="text-center" style="width: 5%;">#</th>
-  <th class="text-center" style="width: 60%;">Candidate Name </th>
-  <th class="text-center" style="width: 35%;">Total Votes Recorded</th>
-</tr>
-{% for data  in value.candidate_data %} {# Loop 2 #}
-  <tr>
-    <td>{{ forloop.counter }}</td>
-    <td>{{ data.name }}</td>
-    <td>{{ data.votes }}</td>
-  </tr>
-  {% empty %}
-  <tr>
-    <td colspan="3">No Candidates Vying For This Position</td>
-  </tr>
-{% endfor %} {# Please Close Loop 2  #}
+    
+    <div class="text-center page-title">
+        {{ title }} Result
+    </div>
 
-<tr>
-  <th class="text-center" colspan="3"> {{ value.winner|safe }} </th>
-  </tr>
-  </table>
-{% endfor %} {# Please Close Loop 1  #}
-
-</tbody>
-  </table>
-
-</body>
+    {% for key, value in positions.items %}
+    <div class="position-section">
+        
+        <div class="position-header text-center">
+            {{ key }} | Maximum Winners: {{ value.max_vote }}
+        </div>
+        
+        <table class="table candidate-table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 5%;">#</th>
+                    <th style="width: 60%;">Candidate Name</th>
+                    <th class="text-center" style="width: 35%;">Total Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in value.candidate_data %}
+                <tr>
+                    <td class="text-center">{{ forloop.counter }}</td>
+                    <td>{{ data.name }}</td>
+                    <td class="text-center vote-count">{{ data.votes }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center no-candidates">No Candidates Vying For This Position</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+        
+        <div class="winner-row">
+            {{ value.winner|safe }}
+        </div>
+        
+    </div>
+    {% endfor %} 
+    </body>
 </html>

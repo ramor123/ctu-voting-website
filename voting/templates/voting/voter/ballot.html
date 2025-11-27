@@ -14,16 +14,16 @@
       </div>
 
       <!-- Ballot Form -->
-      <form method="POST" id="ballotForm" action="{% url 'submit_ballot' %}">
+      <form method="POST" id="ballotForm" action="{% url 'submit_ballot' %}" style="padding-bottom: 20px;">
         {% csrf_token %}
         {{ ballot|safe }}
 
-        <div class="text-center" style="margin-top: 20px;">
-          <button type="button" class="btn btn-success btn-flat" id="preview">
+        <div class="text-center" style="margin-top: 25px; margin-bottom: 15px;">
+          <button type="button" class="btn btn-success btn-flat" id="preview" style="min-width: 120px;">
             <i class="fa fa-file-text"></i> Preview
           </button>
 
-          <button type="submit" class="btn btn-primary btn-flat" name="submit_vote">
+          <button type="submit" class="btn btn-primary btn-flat" name="submit_vote" style="min-width: 120px;">
             <i class="fa fa-check-square-o"></i> Submit
           </button>
         </div>
@@ -41,18 +41,39 @@
 $(document).ready(function() {
 
     /* ---------------------------------------------------
-       iCheck Styling Init
+       Make all candidate photos zoomable
+       (even if HTML is auto-generated)
     --------------------------------------------------- */
-    $('input').each(function() {
-    var self = $(this);
-    self.on('touchstart', function() {
-        self.iCheck('toggle');
+    $("img").each(function () {
+        if ($(this).attr("src") && $(this).attr("src").includes("candidate")) {
+            $(this).addClass("zoomable");
+            $(this).attr("data-img", $(this).attr("src"));
+            $(this).css("cursor", "pointer");
+        }
     });
-});
+
 
 
     /* ---------------------------------------------------
-       Reset Button — Unchecks a whole group
+       Mobile-Friendly iCheck Touch Toggle
+    --------------------------------------------------- */
+    $('input').each(function() {
+        var self = $(this);
+
+        self.css({
+            'min-height': '22px',
+            'min-width': '22px'
+        });
+
+        self.on('touchstart', function() {
+            self.iCheck('toggle');
+        });
+    });
+
+
+
+    /* ---------------------------------------------------
+       Reset Button — Clears a whole group
     --------------------------------------------------- */
     $(document).on('click', '.reset', function(e) {
         e.preventDefault();
@@ -60,11 +81,14 @@ $(document).ready(function() {
         $('.' + desc).iCheck('uncheck');
     });
 
+
+
     /* ---------------------------------------------------
-       Candidate Platform Modal
+       Platform / Bio Modal
     --------------------------------------------------- */
     $(document).on('click', '.platform', function(e) {
         e.preventDefault();
+
         let platform = $(this).data('bio');
         let fullname = $(this).data('fullname');
 
@@ -73,15 +97,16 @@ $(document).ready(function() {
         $('#bio').modal('show');
     });
 
+
+
     /* ---------------------------------------------------
-       Preview Vote Before Submission
+       PREVIEW Before Final Submission
     --------------------------------------------------- */
     $('#preview').on('click', function(e) {
         e.preventDefault();
 
         var formData = $('#ballotForm').serialize();
 
-        // Prevent empty form preview
         if (formData.trim() === "" || formData.search("&") < 0) {
             toastr.error('You must vote at least one candidate', "Preview Error");
             return;
@@ -94,9 +119,10 @@ $(document).ready(function() {
             dataType: 'json',
 
             success: function(response) {
+
                 if (response.error) {
-                    var errmsg = '';
-                    var messages = response.message;
+                    let errmsg = '';
+                    let messages = response.message;
 
                     for (i in messages) {
                         errmsg += messages[i] + "<br>";
@@ -114,6 +140,18 @@ $(document).ready(function() {
                 toastr.error("There was a server error. Try again.", "Error");
             }
         });
+
+    });
+
+
+
+    /* ---------------------------------------------------
+       CLICK → Zoom Image Modal
+    --------------------------------------------------- */
+    $(document).on("click", ".zoomable", function () {
+        let img = $(this).data("img");
+        $("#zoomedImage").attr("src", img);
+        $("#imgZoomModal").modal("show");
     });
 
 });
@@ -124,7 +162,7 @@ $(document).ready(function() {
 
 {% block modal %}
 
-<!-- Candidate Bio Modal -->
+<!-- Candidate Platform Modal -->
 <div class="modal fade" id="bio">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -137,7 +175,7 @@ $(document).ready(function() {
       </div>
 
       <div class="modal-body">
-        <p id="plat_view"></p>
+        <div id="plat_view" style="font-size: 15px; line-height: 1.5;"></div>
       </div>
 
       <div class="modal-footer">
@@ -151,7 +189,8 @@ $(document).ready(function() {
 </div>
 
 
-<!-- Preview Modal -->
+
+<!-- Vote Preview Modal -->
 <div class="modal fade" id="preview_modal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -164,13 +203,35 @@ $(document).ready(function() {
       </div>
 
       <div class="modal-body">
-        <div id="preview_body"></div>
+        <div id="preview_body" style="font-size: 15px;"></div>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal">
           <i class="fa fa-close"></i> Close
         </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Image Zoom Modal -->
+<div class="modal fade" id="imgZoomModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+        <h4 class="modal-title">Candidate Photo</h4>
+      </div>
+
+      <div class="modal-body text-center">
+        <img id="zoomedImage" src="" style="width:100%; border-radius:8px;">
       </div>
 
     </div>
