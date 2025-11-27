@@ -8,12 +8,12 @@
     background: white;
     padding: 40px;
     border-radius: 12px;
-    /* Softer, more modern shadow */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); 
     text-align: center;
     max-width: 400px;
-    margin: 80px auto; /* Centered with decent breathing room */
+    margin: 80px auto;
     font-family: system-ui, -apple-system, sans-serif;
+    position: relative;
   }
 
   /* Logo Section */
@@ -68,7 +68,7 @@
     box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
   }
 
-  /* Button with refined pulse effect */
+  /* Button */
   #login-btn {
     background-color: #28a745;
     color: white;
@@ -81,7 +81,6 @@
     width: 100%;
     margin-top: 10px;
     transition: all 0.2s ease;
-    /* Keeping your pulse animation but smoothing it out */
     animation: glowPulse 3s infinite;
   }
 
@@ -90,25 +89,100 @@
     transform: translateY(-1px);
   }
 
-  #login-btn:active {
-    transform: scale(0.98);
-  }
-
   @keyframes glowPulse {
     0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
     70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
     100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
   }
 
-  @media (max-width: 480px) {
-    .login-box {
-      margin: 40px 20px;
-      padding: 30px 20px;
-    }
+  /* Developer Button */
+  .developer-contact {
+    margin-top: 25px;
+    text-align: center;
+    opacity: 0.75;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  .developer-contact:hover {
+    opacity: 1;
+  }
+
+  .developer-contact img {
+    width: 45px;
+  }
+
+  .developer-contact p {
+    font-size: 13px;
+    color: #555;
+    margin-top: 6px;
+  }
+
+  /* MODAL OVERLAY */
+  .dev-modal-bg {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(2px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  /* MODAL BOX */
+  .dev-modal-box {
+    background: white;
+    padding: 25px;
+    width: 330px;
+    border-radius: 12px;
+    text-align: center;
+    animation: fadeIn 0.25s ease;
+  }
+
+  .dev-modal-box img {
+    width: 80px;
+    margin-bottom: 10px;
+  }
+
+  .dev-modal-box h3 {
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 700;
+  }
+
+  .dev-modal-box p {
+    margin: 4px 0;
+    color: #444;
+  }
+
+  .close-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #dc3545;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .close-btn:hover {
+    background: #c82333;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
   }
 </style>
 
 <div class="login-box">
+
   <div class="login-logo">
     <img src="{% static 'images/ctulogo.png' %}" alt="CTU Logo">
     <b>CTU MOALBOAL VOTING WEBSITE</b>
@@ -128,10 +202,41 @@
     </div>
 
     <button id="login-btn" type="submit" name="login">
-      <i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp; Log In
+      <i class="fa fa-sign-in"></i>&nbsp; Log In
     </button>
+
   </form>
 
+  <!-- Developer Contact Popup Button -->
+  <div class="developer-contact" onclick="openDevModal()">
+    <img src="{% static 'images/developer.png' %}" alt="Developer Logo">
+    <p>Developer Info</p>
+  </div>
+
 </div>
+
+<!-- MODAL OVERLAY -->
+<div class="dev-modal-bg" id="devModal">
+  <div class="dev-modal-box">
+    <img src="{% static 'images/developer.png' %}">
+    <h3>Developer Information</h3>
+    <p><b>Name:</b> ROMAR LOQUINARIO</p>
+    <p><b>Email:</b> smackthat14321@gmail.com</p>
+    <p><b>Contact:</b> 09702977964</p>
+
+
+    <button class="close-btn" onclick="closeDevModal()">Close</button>
+  </div>
+</div>
+
+<script>
+  function openDevModal() {
+    document.getElementById("devModal").style.display = "flex";
+  }
+
+  function closeDevModal() {
+    document.getElementById("devModal").style.display = "none";
+  }
+</script>
 
 {% endblock content %}
